@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="primary">#2134f3</color>
+    <color name="primaryDark">#1976d2</color>
+    <color name="account">#ff4081</color>
+</resources>
