@@ -40,8 +40,14 @@ public class PuzzleBoardView extends View {
     }
 
     public void initialize(Bitmap imageBitmap) {
+        assert (imageBitmap != null);
+
         int width = getWidth();
+
         puzzleBoard = new PuzzleBoard(imageBitmap, width);
+        //so the goal is to divide the image into 3 * 3
+
+
     }
 
     @Override

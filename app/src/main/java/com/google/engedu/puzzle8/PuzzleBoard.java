@@ -24,15 +24,52 @@ import java.util.ArrayList;
 public class PuzzleBoard {
 
     private static final int NUM_TILES = 3;
+
+    public static int getNumTiles() {
+        return NUM_TILES;
+    }
+
     private static final int[][] NEIGHBOUR_COORDS = {
             { -1, 0 },
+
             { 1, 0 },
             { 0, -1 },
             { 0, 1 }
     };
     private ArrayList<PuzzleTile> tiles;
 
-    PuzzleBoard(Bitmap bitmap, int parentWidth) {
+    PuzzleBoard(Bitmap imageBitmap, int parentWidth) {
+        //this takes the big bitMap
+        //splits it
+        //Bitmap[][] bitmapImages = new Bitmap[3][3];
+        //x , y, x +width/3, y + height/3
+        tiles = new ArrayList<>();
+
+        int randX = (int) (Math.random()*PuzzleBoard.getNumTiles());
+        int randY = (int) (Math.random()*PuzzleBoard.getNumTiles());
+
+        assert (imageBitmap != null);
+        int blockWidth = imageBitmap.getWidth()/PuzzleBoard.getNumTiles();
+        int blockHeight = imageBitmap.getHeight()/PuzzleBoard.getNumTiles();
+        for(int x = 0; x < PuzzleBoard.getNumTiles();x++){
+            for(int y = 0; y < PuzzleBoard.getNumTiles();y++){
+                Bitmap bitmapImages = Bitmap.createBitmap(imageBitmap,x*blockWidth,y*blockHeight,blockWidth,blockHeight);
+
+                int newWidth = ((parentWidth)/imageBitmap.getWidth())*bitmapImages.getWidth();
+
+                int newHeight = ((parentWidth)/imageBitmap.getHeight())*bitmapImages.getHeight();
+
+                bitmapImages = Bitmap.createScaledBitmap(bitmapImages,newWidth,newHeight,false);
+
+                PuzzleTile puzzleTile = new PuzzleTile(bitmapImages,y+(x*PuzzleBoard.getNumTiles()));
+                tiles.add(puzzleTile);
+
+
+            }
+        }
+        tiles.set(tiles.size()-1,null);
+
+
     }
 
     PuzzleBoard(PuzzleBoard otherBoard) {

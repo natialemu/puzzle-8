@@ -1,6 +1,8 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:orientation="vertical"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/fragment_layout"
+    android:id="@+id/fragment_linear_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.google.engedu.puzzle8.PuzzleFragment">
@@ -8,4 +10,43 @@
     <!-- TODO: Update blank fragment layout -->
 
 
-</RelativeLayout>
+
+
+    <android.support.v7.widget.CardView
+            xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            android:layout_width="match_parent"
+            android:layout_height="500dp"
+            android:elevation="9dp"
+            android:id="@+id/puzzle_card_view">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="400dp"
+            android:orientation="vertical"
+            android:id="@+id/puzzle_board_view_layout">
+
+        </LinearLayout>
+
+
+
+
+    </android.support.v7.widget.CardView>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</LinearLayout>

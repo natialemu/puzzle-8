@@ -17,26 +17,34 @@ package com.google.engedu.puzzle8;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
+
+import com.oguzdev.circularfloatingactionmenu.library.FloatingActionButton;
+import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu;
+import com.oguzdev.circularfloatingactionmenu.library.SubActionButton;
 
 
 public class PuzzleActivity extends AppCompatActivity {
+    private static final int REQ_CODE_TAKE_PICTURE = 9021;
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
     private Bitmap imageBitmap = null;
     private PuzzleBoardView boardView;
-    private PuzzlePagerAdapter puzzlePagerAdapter;
-    private TabLayout tabLayout;
+    private PuzzlePagerAdapter adapter;
     private ViewPager viewPager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,14 +54,32 @@ public class PuzzleActivity extends AppCompatActivity {
 
         setSupportActionBar(gameToolbar);
 
-        puzzlePagerAdapter = new PuzzlePagerAdapter(getSupportFragmentManager());
-        tabLayout = (TabLayout)findViewById(R.id.tab_layout);
+        adapter = new PuzzlePagerAdapter(getSupportFragmentManager());
+
         viewPager = (ViewPager)findViewById(R.id.viewpager);
-        viewPager.setAdapter(puzzlePagerAdapter);
+        setUpViewPager(viewPager);
+        TabLayout tabLayout = (TabLayout)findViewById(R.id.tab_layout);
+        tabLayout.setupWithViewPager(viewPager);
+
+
+
+
+
+
+
+
+
+        //cameraFragment = new CameraFragment();
+
+
+
+        //viewPager.setAdapter(puzzlePagerAdapter);
+
+        //tabLayout.setupWithViewPager(viewPager);
 
         //tabLayout.setTabsFromPagerAdapter(puzzlePagerAdapter);
-        tabLayout.setupWithViewPager(viewPager);
-        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        //tabLayout.setupWithViewPager(viewPager);
+        //viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         //tabLayout.setTabsFromPagerAdapter(puzzlePagerAdapter);
 
         /*TabLayout.Tab mainGame = tabLayout.newTab();
@@ -74,6 +100,13 @@ public class PuzzleActivity extends AppCompatActivity {
 
         //viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
 
+
+
+
+
+
+
+
         /*viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener(){
 
             @Override
@@ -84,6 +117,28 @@ public class PuzzleActivity extends AppCompatActivity {
             @Override
             public void onPageSelected(int position) {
 
+                if(position == 0){
+                    //secondButton.setVisibility(View.INVISIBLE);
+                    //new FloatingActionMenu.Builder(getParent()).addSubActionView(firstButton).build();
+                    if(!cameraFab.hasOnClickListeners()) {
+                        cameraFab.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+
+                            }
+                        });
+                    }
+                }else if(position == 1){
+                    //secondButton.setVisibility(View.VISIBLE);
+                    if(!puzzleFab.hasOnClickListeners()) {
+                        puzzleFab.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+
+                            }
+                        });
+                    }
+                }
             }
 
             @Override
@@ -96,13 +151,26 @@ public class PuzzleActivity extends AppCompatActivity {
 
         // This code programmatically adds the PuzzleBoardView to the UI.
         /*RelativeLayout container = (RelativeLayout) findViewById(R.id.puzzle_container);
-        boardView = new PuzzleBoardView(this);
+
         // Some setup of the view.
 
         boardView.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
         container.addView(boardView);*/
+
     }
 
+    private void constructFab(){
+            }
+
+
+    private void setUpViewPager(ViewPager viewPager){
+        //PuzzlePagerAdapter adapter = new PuzzlePagerAdapter(getSupportFragmentManager());
+        adapter.addFragment(new CameraFragment(),"Camera");
+        adapter.addFragment(new PuzzleFragment(),"Play");
+        adapter.addFragment(new HelpFragment(), "Help");
+        viewPager.setAdapter(adapter);
+
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -128,9 +196,7 @@ public class PuzzleActivity extends AppCompatActivity {
     public void dispatchTakePictureIntent(View view) {
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-    }
+
 
     public void shuffleImage(View view) {
         boardView.shuffle();
@@ -140,4 +206,32 @@ public class PuzzleActivity extends AppCompatActivity {
       boardView.solve();
 
     }
+
+    //will take a picture and add it to the cardView. the camera fragment will need to
+    @Override
+    protected void onActivityResult(int requestCode, int resultcode, Intent intent){
+        if(requestCode == REQ_CODE_TAKE_PICTURE && resultcode == RESULT_OK){
+            imageBitmap = (Bitmap) intent.getExtras().get("data");
+
+            ImageView imageView = new ImageView(this);
+            imageView.setImageBitmap(imageBitmap);
+
+            CardView cameraCardView = (CardView) findViewById(R.id.camera_cardView);
+            cameraCardView.addView(imageView);
+
+            viewPager.setCurrentItem(1,true);
+
+            PuzzleFragment puzzleFragment = (PuzzleFragment) adapter.getItem(1);
+
+            //ImageView imageView1 = new ImageView(this);
+            //imageView1.setImageResource(R.drawable.chicago);
+            //imageView1.buildDrawingCache();
+            puzzleFragment.passBitMaptoBoardView(imageBitmap);
+
+
+            //pass the imageBitmap to the constructor of
+
+        }
+    }
+
 }

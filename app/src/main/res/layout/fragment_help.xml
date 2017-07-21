@@ -3,23 +3,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.google.engedu.puzzle8.CameraFragment">
+    tools:context="com.google.engedu.puzzle8.HelpFragment">
 
     <!-- TODO: Update blank fragment layout -->
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:elevation="5dp"/>
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="400dp"
-        android:id="@+id/camera_cardView">
-
-    </android.support.v7.widget.CardView>
-
-    <LinearLayout
-        android:layout_width="match_parent"
         android:layout_height="300dp"
-        android:orientation="vertical"
-        android:id="@+id/camera_fab_layout">
-
-    </LinearLayout>
+        android:elevation="5dp"></android.support.v7.widget.CardView>
 
 </LinearLayout>

@@ -2,41 +2,46 @@ package com.google.engedu.puzzle8;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Nathnael on 7/12/2017.
  */
 
-public class PuzzlePagerAdapter extends FragmentStatePagerAdapter {
+public class PuzzlePagerAdapter extends FragmentPagerAdapter{
+
+    private final List<Fragment> fragments = new ArrayList<>();
+    private final List<String> titles = new ArrayList<>();
+
+    public void addFragment(Fragment fragment, String title){
+        fragments.add(fragment);
+        titles.add(title);
+    }
 
 
 
     public PuzzlePagerAdapter(FragmentManager fm){
+
         super(fm);
     }
 
     @Override
     public Fragment getItem(int position) {
-        PuzzleFragment puzzleFragment = PuzzleFragment.getNewFragment(position);
-        return puzzleFragment;
+        return fragments.get(position);
     }
 
     @Override
     public int getCount() {
-        return 3;
+        return fragments.size();
     }
 
     @Override
     public CharSequence getPageTitle(int position){
-        if(position == 0){
-            return "CAMERA";
-        }else if(position == 1){
-            return "PLAY";
-        }else if(position == 2){
-            return "HELP";
-        }
-        return super.getPageTitle(position);
+        return titles.get(position);
 
     }
 
