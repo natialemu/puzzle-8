@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Random;
 
 
-public class PuzzleBoard {
+public class PuzzleBoard implements Comparable{
 
     private static final int NUM_TILES = 3;
 
@@ -33,7 +33,8 @@ public class PuzzleBoard {
 
     private int steps;
 
-    PuzzleBoard previousPuzzleBoard;
+    private static PuzzleBoard previousPuzzleBoard;
+
 
     public static int getNumTiles() {
         return NUM_TILES;
@@ -46,6 +47,11 @@ public class PuzzleBoard {
             { 0, -1 },
             { 0, 1 }
     };
+
+    public ArrayList<PuzzleTile> getTiles() {
+        return tiles;
+    }
+
     private ArrayList<PuzzleTile> tiles;
 
     PuzzleBoard(Bitmap imageBitmap, int parentWidth) {
@@ -245,7 +251,27 @@ public class PuzzleBoard {
 
     }
 
-    public int priority(PuzzleBoard target) {
+    public int priority() {
+
+        int cummulativePriority = 0;
+
+        for(int i = 0; i < tiles.size(); i++)
+        {
+
+            int indexInTarget = tiles.get(i).getNumber();
+            int targetX = indexInTarget/NUM_TILES;
+            int targetY = indexInTarget%NUM_TILES;
+
+            int currentX = i /NUM_TILES;
+            int currentY = i%NUM_TILES;
+
+            int tilePriority = Math.abs(targetY - currentY) + (targetX - currentX);
+            cummulativePriority += tilePriority;
+        }
+
+        cummulativePriority+= steps;
+
+        return cummulativePriority;
 
         //initialize a cummulativePriority
         //for each tile in the board:
@@ -256,9 +282,19 @@ public class PuzzleBoard {
         // add the number of steps to the cummulativePriority and return it.
 
 
-        return 0;
+
     }
 
 
-
+    @Override
+    public int compareTo(Object o) {
+        PuzzleBoard board = (PuzzleBoard)o;
+        if(priority() < board.priority()){
+            return 1;
+        } else if (priority() == board.priority()){
+            return 0;
+        }else{
+            return -1;
+        }
+    }
 }

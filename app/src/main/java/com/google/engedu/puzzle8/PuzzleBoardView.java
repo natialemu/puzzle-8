@@ -24,6 +24,8 @@ import android.view.View;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.PriorityQueue;
 import java.util.Random;
 
 public class PuzzleBoardView extends View {
@@ -113,6 +115,20 @@ public class PuzzleBoardView extends View {
     }
 
     public void solve() {
+
+        PriorityQueue<PuzzleBoard> puzzleBoardPriorityQueue = new PriorityQueue<>();
+        puzzleBoardPriorityQueue.add(puzzleBoard);
+
+        while(!puzzleBoardPriorityQueue.isEmpty()){
+            ArrayList<PuzzleBoard> neighbours = puzzleBoard.neighbours();
+            puzzleBoardPriorityQueue.addAll(neighbours);
+
+            PuzzleBoard minPriorityBoard = puzzleBoardPriorityQueue.poll();
+            animation.add(minPriorityBoard);
+            if(minPriorityBoard.resolved()){
+                Collections.reverse(animation);
+            }
+        }
         //make sure that PuzzleBoard implements Comparable then override compareTo based on priority
 
         //insert curent board to PQ
