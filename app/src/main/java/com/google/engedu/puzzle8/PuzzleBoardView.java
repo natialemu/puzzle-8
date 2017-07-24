@@ -33,6 +33,8 @@ public class PuzzleBoardView extends View {
     private ArrayList<PuzzleBoard> animation;
     private Random random = new Random();
 
+    private PuzzleBoard solution;
+
     public PuzzleBoardView(Context context) {
         super(context);
         activity = (Activity) context;
@@ -43,6 +45,8 @@ public class PuzzleBoardView extends View {
         assert (imageBitmap != null);
 
         int width = getWidth();
+
+        solution = new PuzzleBoard(imageBitmap,width);//this should not be shuffled
 
         puzzleBoard = new PuzzleBoard(imageBitmap, width);
         //so the goal is to divide the image into 3 * 3
@@ -73,9 +77,20 @@ public class PuzzleBoardView extends View {
 
     public void shuffle() {
         if (animation == null && puzzleBoard != null) {
+
+            for(int i = 0; i < Math.random()*30; i++){
+                Random random = new Random();
+                ArrayList<PuzzleBoard> boards = puzzleBoard.neighbours();
+                int randIndex = random.nextInt(boards.size());
+                PuzzleBoard board = boards.get(randIndex);
+                puzzleBoard = board;
+                invalidate();
+
+
+            }
             // Do something. Then:
-            puzzleBoard.reset();
-            invalidate();
+            //puzzleBoard.reset();
+            //invalidate();
         }
     }
 
@@ -98,5 +113,17 @@ public class PuzzleBoardView extends View {
     }
 
     public void solve() {
+        //make sure that PuzzleBoard implements Comparable then override compareTo based on priority
+
+        //insert curent board to PQ
+
+        //while PQ is not empty:
+        //   get all neighbours of the current state
+        //   put the boards into the PQ
+        //   deque board
+        //   add dequed board to animations
+        //   if board is solution:
+        //      Collections.reverse(animations)
+
     }
 }

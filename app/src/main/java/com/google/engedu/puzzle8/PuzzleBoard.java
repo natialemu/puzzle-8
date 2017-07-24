@@ -19,11 +19,21 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 
 public class PuzzleBoard {
 
     private static final int NUM_TILES = 3;
+
+    public int getSteps() {
+        return steps;
+    }
+
+    private int steps;
+
+    PuzzleBoard previousPuzzleBoard;
 
     public static int getNumTiles() {
         return NUM_TILES;
@@ -39,6 +49,10 @@ public class PuzzleBoard {
     private ArrayList<PuzzleTile> tiles;
 
     PuzzleBoard(Bitmap imageBitmap, int parentWidth) {
+
+        steps = 0;
+
+        previousPuzzleBoard = null;
         //this takes the big bitMap
         //splits it
         //Bitmap[][] bitmapImages = new Bitmap[3][3];
@@ -74,6 +88,8 @@ public class PuzzleBoard {
 
     PuzzleBoard(PuzzleBoard otherBoard) {
         tiles = (ArrayList<PuzzleTile>) otherBoard.tiles.clone();
+        previousPuzzleBoard = otherBoard;
+        steps = otherBoard.getSteps() + 1;
     }
 
     public void reset() {
@@ -145,11 +161,104 @@ public class PuzzleBoard {
     }
 
     public ArrayList<PuzzleBoard> neighbours() {
-        return null;
+
+        ArrayList<PuzzleBoard> puzzleBoards = new ArrayList<>();
+
+        int nullIndex = getNullIndex();
+
+        int nullIndexX = nullIndex/NUM_TILES;
+
+        int nullIndexY = nullIndex%NUM_TILES;
+
+        if (isValid(nullIndex + 1, nullIndexY)) {
+            PuzzleBoard copyBoard = new PuzzleBoard(this);
+            int neighborIndex = XYtoIndex(nullIndexX+1,nullIndexY);
+            int currentIndex = XYtoIndex(nullIndexX,nullIndexY);
+
+            copyBoard.swapTiles(neighborIndex,currentIndex);
+            puzzleBoards.add(copyBoard);
+            //create a copy puzzleboard
+            //convert nullIndex + 1, nullIndexY to Index
+            //then swap the values at converted nullIndex + 1, y and just nullIndexX and Y
+            //add the copy buzzleboard into the puzzleboards list
+        }
+
+        if (isValid(nullIndex, nullIndexY+1)) {
+            PuzzleBoard copyBoard = new PuzzleBoard(this);
+            int neighborIndex = XYtoIndex(nullIndexX,nullIndexY+1);
+            int currentIndex = XYtoIndex(nullIndexX,nullIndexY);
+
+            copyBoard.swapTiles(neighborIndex,currentIndex);
+            puzzleBoards.add(copyBoard);
+            //create a copy puzzleboard
+            //convert nullIndex + 1, nullIndexY to Index
+            //then swap the values at converted nullIndex + 1, y and just nullIndexX and Y
+            //add the copy buzzleboard into the puzzleboards list
+        }
+
+        if (isValid(nullIndex - 1, nullIndexY)) {
+            PuzzleBoard copyBoard = new PuzzleBoard(this);
+            int neighborIndex = XYtoIndex(nullIndexX-1,nullIndexY);
+            int currentIndex = XYtoIndex(nullIndexX,nullIndexY);
+
+            copyBoard.swapTiles(neighborIndex,currentIndex);
+            puzzleBoards.add(copyBoard);
+            //create a copy puzzleboard
+            //convert nullIndex + 1, nullIndexY to Index
+            //then swap the values at converted nullIndex + 1, y and just nullIndexX and Y
+            //add the copy buzzleboard into the puzzleboards list
+        }
+
+        if (isValid(nullIndex, nullIndexY-1)) {
+            PuzzleBoard copyBoard = new PuzzleBoard(this);
+            int neighborIndex = XYtoIndex(nullIndexX,nullIndexY-1);
+            int currentIndex = XYtoIndex(nullIndexX,nullIndexY);
+
+            copyBoard.swapTiles(neighborIndex,currentIndex);
+            puzzleBoards.add(copyBoard);
+            //create a copy puzzleboard
+            //convert nullIndex + 1, nullIndexY to Index
+            //then swap the values at converted nullIndex + 1, y and just nullIndexX and Y
+            //add the copy buzzleboard into the puzzleboards list
+        }
+
+
+
+
+        return puzzleBoards;
     }
 
-    public int priority() {
+    private int getNullIndex() {
+
+        for(int i = 0; i < tiles.size(); i++){
+            if(tiles.get(i) == null){
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
+    private boolean isValid(int nullIndexX, int nullIndexY) {
+
+        return ((nullIndexX < NUM_TILES && nullIndexX >= 0) && ( nullIndexY < NUM_TILES && nullIndexY >= 0));
+
+    }
+
+    public int priority(PuzzleBoard target) {
+
+        //initialize a cummulativePriority
+        //for each tile in the board:
+        //    findIndexInTarget
+        //    convert both indeces to x and y (currentX, currentY) and (targetX, targetY)
+        //    to find the priorty, Math.abs(targetY - currentY) + Math.abs(targetX - currentX)
+        //    add to the cummulitave priority
+        // add the number of steps to the cummulativePriority and return it.
+
+
         return 0;
     }
+
+
 
 }
