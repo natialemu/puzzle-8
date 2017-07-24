@@ -35,7 +35,6 @@ public class PuzzleBoardView extends View {
     private ArrayList<PuzzleBoard> animation;
     private Random random = new Random();
 
-    private PuzzleBoard solution;
 
     public PuzzleBoardView(Context context) {
         super(context);
@@ -47,8 +46,6 @@ public class PuzzleBoardView extends View {
         assert (imageBitmap != null);
 
         int width = getWidth();
-
-        solution = new PuzzleBoard(imageBitmap,width);//this should not be shuffled
 
         puzzleBoard = new PuzzleBoard(imageBitmap, width);
         //so the goal is to divide the image into 3 * 3
