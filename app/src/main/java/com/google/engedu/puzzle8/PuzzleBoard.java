@@ -19,8 +19,6 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 
 
 public class PuzzleBoard implements Comparable{
